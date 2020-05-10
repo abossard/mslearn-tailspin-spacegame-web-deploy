@@ -81,8 +81,16 @@ stages:
           steps:
           - download: current
             artifact: drop
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Resource Manager - Tailspin - Space Game'
+              appType: 'webAppLinux'
+              WebAppName: '$(WebAppName)'
+              packageForLinux: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
+            enabled: false
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppName)'
